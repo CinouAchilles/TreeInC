@@ -148,21 +148,36 @@ int sumofallnodes(tree *root)
     return (root->data + sumofallnodes(root->right) + sumofallnodes(root->left));
 }
 
-void printLongestPath(tree *root){
+void printLongestPath(tree *root)
+{
     if (root == NULL)
     {
         return;
     }
-    printf("%d ",root->data);
+    printf("%d ", root->data);
     int lhpath = height(root->left);
     int rhpath = height(root->right);
     if (lhpath > rhpath)
     {
         printLongestPath(root->left);
-    }else{
+    }
+    else
+    {
         printLongestPath(root->right);
     }
-    
+}
+
+void changeplace(tree *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    tree *temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+    changeplace(root->left);
+    changeplace(root->right);
 }
 
 int main()
@@ -190,4 +205,7 @@ int main()
     printf("\n");
     printf("Print the longest path: ");
     printLongestPath(root);
+    printf("\nReverse data from the left to right: ");
+    changeplace(root);
+    preorderprint(root);
 }
